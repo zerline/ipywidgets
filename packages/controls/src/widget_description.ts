@@ -82,6 +82,12 @@ class DescriptionView extends DOMWidgetView {
         this.label.title = description_tooltip;
     }
 
+    updateTabindex() {
+        let tabindex = this.model.get('_tabindex')
+        if (tabindex) this.el.setAttribute('_tabindex', tabindex);
+        else this.el.removeAttribute('_tabindex');
+    }
+
     label: HTMLLabelElement;
 }
 
