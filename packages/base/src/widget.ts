@@ -969,6 +969,18 @@ class DOMWidgetView extends WidgetView {
         }
     }
 
+    updateTabindex() {
+        let tabindex = this.model.get('_tabindex')
+        if (tabindex) this.el.setAttribute('_tabindex', tabindex);
+        else this.el.removeAttribute('_tabindex');
+    }
+
+    updateTooltip() {
+        let tooltip = this.model.get('_tooltip')
+        if (tooltip) this.el.setAttribute('_tooltip', tooltip);
+        else this.el.removeAttribute('_tooltip');
+    }
+
     '$el': any;
     pWidget: Widget;
     layoutPromise: Promise<any>;

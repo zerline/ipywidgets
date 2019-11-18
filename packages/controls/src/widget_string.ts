@@ -35,6 +35,28 @@ class StringModel extends CoreDescriptionModel {
 }
 
 export
+class StringView extends DescriptionView {
+    /**
+     * Called when view is rendered.
+     */
+    render() {
+        super.render(); // Incl. setting defaults.
+        this.el.classList.add('jupyter-widgets');
+        this.el.classList.add('widget-inline-hbox');
+        // this.update(); // Set defaults.
+    }
+
+    /**
+     * Update the contents of this view
+     *
+     * Called when the model is changed.  The model may have been
+     * changed by another view or by a state update from the back-end.
+     */
+
+    content: HTMLDivElement;
+}
+
+export
 class HTMLModel extends StringModel {
     defaults() {
         return _.extend(super.defaults(), {
@@ -45,14 +67,12 @@ class HTMLModel extends StringModel {
 }
 
 export
-class HTMLView extends DescriptionView {
+class HTMLView extends StringView {
     /**
      * Called when view is rendered.
      */
     render() {
         super.render();
-        this.el.classList.add('jupyter-widgets');
-        this.el.classList.add('widget-inline-hbox');
         this.el.classList.add('widget-html');
         this.content = document.createElement('div');
         this.content.classList.add('widget-html-content');
@@ -86,14 +106,12 @@ class HTMLMathModel extends StringModel {
 }
 
 export
-class HTMLMathView extends DescriptionView {
+class HTMLMathView extends StringView {
     /**
      * Called when view is rendered.
      */
     render() {
         super.render();
-        this.el.classList.add('jupyter-widgets');
-        this.el.classList.add('widget-inline-hbox');
         this.el.classList.add('widget-htmlmath');
         this.content = document.createElement('div');
         this.content.classList.add('widget-htmlmath-content');
@@ -124,13 +142,12 @@ class LabelModel extends StringModel {
 }
 
 export
-class LabelView extends DescriptionView {
+class LabelView extends StringView {
     /**
      * Called when view is rendered.
      */
     render() {
         super.render();
-        this.el.classList.add('jupyter-widgets');
         this.el.classList.add('widget-label');
         this.update(); // Set defaults.
     }
@@ -160,14 +177,12 @@ class TextareaModel extends StringModel {
 }
 
 export
-class TextareaView extends DescriptionView {
+class TextareaView extends StringView {
     /**
      * Called when view is rendered.
      */
     render() {
         super.render();
-        this.el.classList.add('jupyter-widgets');
-        this.el.classList.add('widget-inline-hbox');
         this.el.classList.add('widget-textarea');
 
         this.textbox = document.createElement('textarea');
@@ -270,14 +285,12 @@ class TextModel extends StringModel {
 }
 
 export
-class TextView extends DescriptionView {
+class TextView extends StringView {
     /**
      * Called when view is rendered.
      */
     render() {
         super.render();
-        this.el.classList.add('jupyter-widgets');
-        this.el.classList.add('widget-inline-hbox');
         this.el.classList.add('widget-text');
 
         this.textbox = document.createElement('input');
@@ -289,18 +302,15 @@ class TextView extends DescriptionView {
         this.listenTo(this.model, 'change:placeholder', (model, value, options) => {
             this.update_placeholder(value);
         });
-        this.listenTo(this.model, 'change:description_tooltip', this.update_title);
-        this.listenTo(this.model, 'change:description', this.update_title);
 
         this.update_placeholder();
-        this.update_title();
     }
 
     update_placeholder(value?: string) {
         this.textbox.setAttribute('placeholder', value || this.model.get('placeholder'));
     }
 
-    update_title() {
+    updateTooltip() {
         let title = this.model.get('description_tooltip');
         if (!title) {
             this.textbox.removeAttribute('title');

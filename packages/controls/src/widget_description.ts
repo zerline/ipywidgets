@@ -57,8 +57,13 @@ class DescriptionView extends DOMWidgetView {
         this.label.style.display = 'none';
 
         this.listenTo(this.model, 'change:description', this.updateDescription);
-        this.listenTo(this.model, 'change:description_tooltip', this.updateDescription);
+        this.listenTo(this.model, 'change:tabindex', this.updateTabindex);
+        this.listenTo(this.model, 'change:description', this.updateTooltip);
+        this.listenTo(this.model, 'change:description_tooltip', this.updateTooltip);
         this.updateDescription();
+        this.updateTabindex();
+        this.updateTooltip();
+        return super.update();
     }
 
     typeset(element: HTMLElement, text?: string){
@@ -67,11 +72,6 @@ class DescriptionView extends DOMWidgetView {
 
     updateDescription() {
         let description = this.model.get('description');
-        let description_tooltip = this.model.get('description_tooltip');
-        if (description_tooltip === null) {
-            description_tooltip = description;
-        }
-
         if (description.length === 0) {
             this.label.style.display = 'none';
         } else {
@@ -79,13 +79,19 @@ class DescriptionView extends DOMWidgetView {
             this.typeset(this.label);
             this.label.style.display = '';
         }
-        this.label.title = description_tooltip;
     }
 
     updateTabindex() {
-        let tabindex = this.model.get('_tabindex')
-        if (tabindex) this.el.setAttribute('_tabindex', tabindex);
-        else this.el.removeAttribute('_tabindex');
+        return super.updateTabindex();
+    }
+
+    updateTooltip() {
+        let description = this.model.get('description');
+        let description_tooltip = this.model.get('description_tooltip');
+        if (description_tooltip === null) {
+            description_tooltip = description;
+        }
+        this.label.title = description_tooltip;
     }
 
     label: HTMLLabelElement;
