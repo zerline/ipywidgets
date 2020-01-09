@@ -269,6 +269,12 @@ abstract class BaseIntSliderView extends DescriptionView {
         return Math.floor(x);
     }
 
+    updateTooltip() {
+        super.updateTooltip(); // Set a tooltip on the label if any
+        if (!this.slider_container) return;
+        this.slider_container.title = this.model.get('tooltip');
+    }
+
     $slider: any;
     slider_container: HTMLElement;
     readout: HTMLDivElement;
@@ -645,6 +651,12 @@ class IntTextView extends DescriptionView {
                 this.touch();
             }
         }
+    }
+
+    updateTooltip() {
+        super.updateTooltip(); // Set a tooltip on the label if any
+        if (!this.textbox) return;
+        this.textbox.title = this.model.get('tooltip');
     }
 
     _parse_value = parseInt;

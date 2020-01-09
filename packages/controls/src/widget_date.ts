@@ -91,8 +91,10 @@ class DatePickerView extends DescriptionView {
         this.el.appendChild(this._datepicker);
 
         this.listenTo(this.model, 'change:value', this._update_value);
+
         this._update_value();
         this.update();
+        //this.updateTooltip();
     }
 
     /**
@@ -136,6 +138,12 @@ class DatePickerView extends DescriptionView {
             this.model.set('value', null);
             this.touch();
         }
+    }
+
+    updateTooltip() {
+        super.updateTooltip(); // Set a tooltip on the label
+        if (!this._datepicker) return;
+        this._datepicker.title = this.model.get('tooltip');
     }
 
     private _datepicker: HTMLInputElement;

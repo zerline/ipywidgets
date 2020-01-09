@@ -295,6 +295,7 @@ class RadioButtonsView extends DescriptionView {
         this.container = document.createElement('div');
         this.el.appendChild(this.container);
         this.container.classList.add('widget-radio-box');
+        //this.listenTo(this.model, 'change:tooltip', this.updateTooltip);
 
         this.update();
     }
@@ -403,6 +404,15 @@ class RadioButtonsView extends DescriptionView {
         let target = event.target as HTMLInputElement;
         this.model.set('index', parseInt(target.value), {updated_view: this});
         this.touch();
+    }
+
+    updateTooltip() {
+        super.updateTooltip(); // Set a tooltip on the label
+        if (!this.container) return;
+        const firstItem = this.container.firstElementChild as HTMLElement;
+        if (firstItem) {
+            firstItem.title = this.model.get('tooltip');
+	}
     }
 
     container: HTMLDivElement;

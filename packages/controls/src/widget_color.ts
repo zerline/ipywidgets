@@ -57,6 +57,7 @@ class ColorPickerView extends DescriptionView {
         this._update_concise();
         this._update_value();
         this.update();
+        //this.updateTooltip();
     }
 
     /**
@@ -119,6 +120,12 @@ class ColorPickerView extends DescriptionView {
     private _validate_color(color: string, fallback: any) {
         return color.match(/#[a-fA-F0-9]{3}(?:[a-fA-F0-9]{3})?$/) ||
           named_colors[color.toLowerCase()] ? color: fallback;
+    }
+
+    updateTooltip() {
+        super.updateTooltip(); // Set a tooltip on the label
+        if (!this._color_container) return;
+        this._color_container.title = this.model.get('tooltip');
     }
 
     private _color_container: HTMLDivElement;
